@@ -173,25 +173,40 @@ const interpolatedName = loaderUtils.interpolateName(loaderContext, name, option
 
 The following tokens are replaced in the `name` parameter:
 
+> 实参 `name` （`string` 类型）中以下子字符串将会被替换：
+
 * `[ext]` the extension of the resource
+  > `[ext]` 将会被替换成资源的后缀
 * `[name]` the basename of the resource
+  > `[name]` 将会被替换成资源的 *basename*
 * `[path]` the path of the resource relative to the `context` query parameter or option.
+  > `[path]` 将会被替换成资源相对于 `options` 参数中 `context` 的路径，`options` 参数即 `interpolateName` 方法的第三个参数
 * `[folder]` the folder the resource is in.
+  > `[folder]` 将会被替换成目录名 
 * `[emoji]` a random emoji representation of `options.content`
+  > `[emoji]` 将会被替换成随机生成的一个表情
 * `[emoji:<length>]` same as above, but with a customizable number of emojis
+  > `[emoji:<length>]` 将会被替换成随机生成的 `length` 个表情
 * `[contenthash]` the hash of `options.content` (Buffer) (by default it's the hex digest of the md5 hash)
+  > `[contenthash]` 将会被替换成 `options.content` 的 md5 加密的 16 进制表示
 * `[<hashType>:contenthash:<digestType>:<length>]` optionally one can configure
   * other `hashType`s, i. e. `sha1`, `md5`, `sha256`, `sha512`
   * other `digestType`s, i. e. `hex`, `base26`, `base32`, `base36`, `base49`, `base52`, `base58`, `base62`, `base64`
   * and `length` the length in chars
+  > `[<hashType>:contenthash:<digestType>:<length>]` 将会被替换成对 `options.content` 进行指定加密的指定编码形式的表示，结果的长度为 `length`
 * `[hash]` the hash of `options.content` (Buffer) (by default it's the hex digest of the md5 hash)
+  > `[hash]` 和 `[contenthash]` 一样
 * `[<hashType>:hash:<digestType>:<length>]` optionally one can configure
   * other `hashType`s, i. e. `sha1`, `md5`, `sha256`, `sha512`
   * other `digestType`s, i. e. `hex`, `base26`, `base32`, `base36`, `base49`, `base52`, `base58`, `base62`, `base64`
   * and `length` the length in chars
+  > `[<hashType>:hash:<digestType>:<length>]` 和 `[<hashType>:contenthash:<digestType>:<length>]` 一样
 * `[N]` the N-th match obtained from matching the current file name against `options.regExp`
+  > 【Todo-搞清楚 .exec 的作用】`[N]` 将被替换成 `options.regExp.exec(loaderContext.resourcePath)[N]` 的结果，例如 `/\/([a-z0-9]+)\/[a-z0-9]+\.png$/.exec('/foo/xyz.png')[1]` 的结果是 `foo`。
 
 In loader context `[hash]` and `[contenthash]` are the same, but we recommend using `[contenthash]` for avoid misleading.
+
+> `[hash]` 和 `[contenthash]` 一模一样，但推荐使用 `[contenthash]`，避免语义上有歧义。
 
 Examples
 
